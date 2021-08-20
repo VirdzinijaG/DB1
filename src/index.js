@@ -22,3 +22,66 @@ meniu:
 
 */
 
+import readline from "readline";
+import mysql from "mysql";
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
+
+function inputText(msg) {
+    return new Promise((resolve) => {
+        rl.question(msg, (text) => {
+            resolve(text);
+        });
+    });
+}
+
+const conn = mysql.createConnection({
+    host: "localhost",
+    user: "nodejs",
+    password: "nodejs123456",
+    database: "zmones",
+    multipleStatements: true,
+});
+
+function dbConnect() {
+    return new Promise((resolve, reject) => {
+        conn.connect((err) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}
+
+function dbDisconnect() {
+    return new Promise((resolve, reject) => {
+        conn.end((err) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        });
+    });
+}
+
+function dbQuery() {
+    return new Promise((resolve, reject) => {
+        conn.query(...arguments, (err, results, fields) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                results,
+                fields,
+            });
+        });
+    });
+}
+
