@@ -85,3 +85,36 @@ function dbQuery() {
     });
 }
 
+function printTable(r) {
+    let text = "";
+    for (const col of r.fields) {
+        text += col.name + "\t";
+    }
+    console.log(text);
+    for (const row of r.results) {
+        text = "";
+        for (const col of r.fields) {
+            text += row[col.name] + "\t";
+        }
+        console.log(text);
+    }
+}
+
+try {
+    await dbConnect();
+    let r = await dbQuery("select * from zmones");
+    printTable(r);
+    console.log("------------------------------------------------");
+    r = await dbQuery("select * from kontaktai");
+    printTable(r);
+    console.log("------------------------------------------------");
+} catch (err) {
+    console.log("Klaida: ", err);
+} finally {
+    try {
+        await dbDisconnect();
+    } catch (err) {
+    }
+    rl.close();
+}
+
