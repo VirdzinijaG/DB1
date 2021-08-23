@@ -127,6 +127,27 @@ while (run) {
                 }
             }
         case 2:
+            let vardas = await inputText("Ivesk varda: ");
+            let pavarde = await inputText("Ivesk pavarde: ");
+            let alga = parseFloat(await inputText("Ivesk alga: "));
+            if (vardas.trim() !== "" && pavarde.trim() !== "" && isFinite(alga)) {
+                try {
+                    await dbConnect();
+                    let r = await dbQuery("insert into zmones (vardas, pavarde, alga) values (?, ?, ?)", [vardas, pavarde, alga]);
+                    printTable(r);
+                }
+                catch (err) {
+                    console.log("Klaida: ", err);
+                } finally {
+                    try {
+                        await dbDisconnect();
+                    } catch (err) {
+                    }
+                }
+            } else {
+                console.log("Blogai ivesti duomenys");
+            }
+
         case 3:
         case 4:
         case 0:
