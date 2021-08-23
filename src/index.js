@@ -117,34 +117,20 @@ while (run) { // meniu atspausdinamas // su backtick spaudina per kelias eilutes
     let pasirinkikmas = await inputText("Pasirink: "); // pasirinkimo nustatytmas
     pasirinkikmas = parseInt(pasirinkikmas); // padaromas skaicius
     switch (pasirinkikmas) {
+        /* let vardas;
+        let pavarde;
+        let alga;
+        vienas is butu, kad nemestu klaidos, del tokio pacio deklaruoto kintamojo
+        kintamuju deklaravimas virsuje */
+
+        // kitas variantas suideti salygas i atskira(vidini) skaupa {}
         case 1:
-            let conn;
-            try {
-                conn = await dbConnect(); // prisijungimas prie duomenu bazes
-                let r = await dbQuery(conn, "select id, vardas, pavarde, gim_data, alga from zmones"); // nusiunciama uzklausa
-                printTable(r); // gautas rezultatas atspausdinamas
-            }
-            catch (err) {
-                console.log("Klaida: ", err);
-            } finally {
-                try {
-                    await dbDisconnect(conn);
-                } catch (err) {
-                }
-            }
-            break;
-        case 2:
-            let vardas = await inputText("Ivesk varda: "); // ivedami nauji duomenys
-            let pavarde = await inputText("Ivesk pavarde: ");
-            let alga = parseFloat(await inputText("Ivesk alga: ")); // skaicius
-            if (vardas.trim() !== "" && pavarde.trim() !== "" && isFinite(alga)) {
-                // trim() - salina tarpu simbolius is eilutes pradzios ir pabaigos
-                // isFinite - tikrina ar nera teigimama/neigiama begalybe, nei NaN
+            {
                 let conn;
                 try {
-                   conn =  await dbConnect();
-                    let r = await dbQuery(conn, "insert into zmones (vardas, pavarde, alga) values (?, ?, ?)", [vardas, pavarde, alga]); // nauju demenu ivedimas i duomenu baze
-                    // printTable(r);
+                    conn = await dbConnect(); // prisijungimas prie duomenu bazes
+                    let r = await dbQuery(conn, "select id, vardas, pavarde, gim_data, alga from zmones"); // nusiunciama uzklausa
+                    printTable(r); // gautas rezultatas atspausdinamas
                 }
                 catch (err) {
                     console.log("Klaida: ", err);
@@ -154,12 +140,62 @@ while (run) { // meniu atspausdinamas // su backtick spaudina per kelias eilutes
                     } catch (err) {
                     }
                 }
-            } else {
-                console.log("Blogai ivesti duomenys");
             }
             break;
-
+        case 2:
+            {
+                let vardas = await inputText("Ivesk varda: "); // ivedami nauji duomenys
+                let pavarde = await inputText("Ivesk pavarde: ");
+                let alga = parseFloat(await inputText("Ivesk alga: ")); // skaicius
+                if (vardas.trim() !== "" && pavarde.trim() !== "" && isFinite(alga)) {
+                    // trim() - salina tarpu simbolius is eilutes pradzios ir pabaigos
+                    // isFinite - tikrina ar nera teigimama/neigiama begalybe, nei NaN
+                    let conn;
+                    try {
+                        conn = await dbConnect();
+                        let r = await dbQuery(conn, "insert into zmones (vardas, pavarde, alga) values (?, ?, ?)", [vardas, pavarde, alga]); // nauju duomenu ivedimas i duomenu baze
+                        // printTable(r);
+                    }
+                    catch (err) {
+                        console.log("Klaida: ", err);
+                    } finally {
+                        try {
+                            await dbDisconnect(conn);
+                        } catch (err) {
+                        }
+                    }
+                } else {
+                    console.log("Blogai ivesti duomenys");
+                }
+            }
+            break;
         case 3:
+            {
+                let id = parseInt(await inputText("Ivesk id: "));
+                let vardas = await inputText("Ivesk varda: "); // ivedami nauji duomenys
+                let pavarde = await inputText("Ivesk pavarde: ");
+                let alga = parseFloat(await inputText("Ivesk alga: ")); // skaicius
+                if (isFinite(id) && vardas.trim() !== "" && pavarde.trim() !== "" && isFinite(alga)) {
+                    // trim() - salina tarpu simbolius is eilutes pradzios ir pabaigos
+                    // isFinite - tikrina ar nera teigimama/neigiama begalybe, nei NaN
+                    let conn;
+                    try {
+                        conn = await dbConnect();
+                        let r = await dbQuery(conn, "update zmones set vardas = ?, pavarde = ?, alga = ? where id = ?", [vardas, pavarde, alga, id]); // atnaujinami duomenys duomenu bazeje pagal id
+                        // printTable(r);
+                    }
+                    catch (err) {
+                        console.log("Klaida: ", err);
+                    } finally {
+                        try {
+                            await dbDisconnect(conn);
+                        } catch (err) {
+                        }
+                    }
+                } else {
+                    console.log("Blogai ivesti duomenys");
+                }
+            }
             break;
         case 4:
             break;
@@ -168,7 +204,6 @@ while (run) { // meniu atspausdinamas // su backtick spaudina per kelias eilutes
             break;
         default: // ivedus netinkama pasirinkima
             console.log("Ismok naudotis klaviatura");
-
     }
 }
 
