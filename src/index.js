@@ -198,6 +198,28 @@ while (run) { // meniu atspausdinamas // su backtick spaudina per kelias eilutes
             }
             break;
         case 4:
+            {
+                let id = parseInt(await inputText("Ivesk id: "));
+                if (isFinite(id)) {
+                    // isFinite - tikrina ar nera teigimama/neigiama begalybe, nei NaN
+                    let conn;
+                    try {
+                        conn = await dbConnect();
+                        await dbQuery(conn, "delete from zmones where id = ?", [id]); // duomenu istrinimas duomenu bazeje pagal id
+                        // printTable(r);
+                    }
+                    catch (err) {
+                        console.log("Klaida: ", err);
+                    } finally {
+                        try {
+                            await dbDisconnect(conn);
+                        } catch (err) {
+                        }
+                    }
+                } else {
+                    console.log("Blogai ivesti duomenys");
+                }
+            }
             break;
         case 0: // baigia darba
             run = false;
