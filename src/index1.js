@@ -22,6 +22,7 @@ meniu:
 
 */
 // destytojo
+// viskas sukelta i try 
 
 import readline from "readline";
 import mysql from "mysql";
