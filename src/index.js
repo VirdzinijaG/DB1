@@ -113,6 +113,19 @@ while (run) {
     pasirinkikmas = parseInt(pasirinkikmas);
     switch (pasirinkikmas) {
         case 1:
+            try {
+                await dbConnect();
+                let r = await dbQuery("select id, vardas, pavarde, gim_data, alga from zmones");
+                printTable(r);
+            }
+            catch (err) {
+                console.log("Klaida: ", err);
+            } finally {
+                try {
+                    await dbDisconnect();
+                } catch (err) {
+                }
+            }
         case 2:
         case 3:
         case 4:
