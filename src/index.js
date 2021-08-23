@@ -100,6 +100,32 @@ function printTable(r) {
     }
 }
 
+let run = true;
+while (run) {
+    console.log(`
+1. zmoniu sarasas
+2. prideti zmogu
+3. pakeisti zmogaus info
+4. istrinti zmogu
+0. baigti
+    `);
+    let pasirinkikmas = await inputText("Pasirink: ");
+    pasirinkikmas = parseInt(pasirinkikmas);
+    switch (pasirinkikmas) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 0:
+            run = false;
+            break;
+        default:
+            console.log("Ismok naudotis klaviatura");
+
+    }
+}
+
+rl.close();
 // try {
 // await dbConnect();
 // let r = await dbQuery("select * from zmones");
@@ -129,20 +155,20 @@ function printTable(r) {
 
 
 
-await inputText("Kelintas meniu? ")
-if (userInput === 1) {
-    try {
-        await dbConnect();
-        let r = await dbQuery("select * from zmones");
-        printTable(r);
-        console.log("------------------------------------------------");
-    } catch (err) {
-        console.log("Klaida: ", err);
-    } finally {
-        try {
-            await dbDisconnect();
-        } catch (err) {
-        }
-        rl.close();
-        }
-}
+// await inputText("Kelintas meniu? ")
+// if (userInput === 1) {
+//     try {
+//         await dbConnect();
+//         let r = await dbQuery("select * from zmones");
+//         printTable(r);
+//         console.log("------------------------------------------------");
+//     } catch (err) {
+//         console.log("Klaida: ", err);
+//     } finally {
+//         try {
+//             await dbDisconnect();
+//         } catch (err) {
+//         }
+//         rl.close();
+//         }
+// }
