@@ -134,20 +134,23 @@ while (run) { // meniu atspausdinamas // su backtick spaudina per kelias eilutes
             }
             break;
         case 2:
-            let vardas = await inputText("Ivesk varda: ");
+            let vardas = await inputText("Ivesk varda: "); // ivedami nauji duomenys
             let pavarde = await inputText("Ivesk pavarde: ");
-            let alga = parseFloat(await inputText("Ivesk alga: "));
+            let alga = parseFloat(await inputText("Ivesk alga: ")); // skaicius
             if (vardas.trim() !== "" && pavarde.trim() !== "" && isFinite(alga)) {
+                // trim() - salina tarpu simbolius is eilutes pradzios ir pabaigos
+                // isFinite - tikrina ar nera teigimama/neigiama begalybe, nei NaN
+                let conn;
                 try {
-                    await dbConnect();
-                    let r = await dbQuery("insert into zmones (vardas, pavarde, alga) values (?, ?, ?)", [vardas, pavarde, alga]);
-                    printTable(r);
+                   conn =  await dbConnect();
+                    let r = await dbQuery(conn, "insert into zmones (vardas, pavarde, alga) values (?, ?, ?)", [vardas, pavarde, alga]); // nauju demenu ivedimas i duomenu baze
+                    // printTable(r);
                 }
                 catch (err) {
                     console.log("Klaida: ", err);
                 } finally {
                     try {
-                        await dbDisconnect();
+                        await dbDisconnect(conn);
                     } catch (err) {
                     }
                 }
