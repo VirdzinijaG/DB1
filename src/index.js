@@ -100,21 +100,49 @@ function printTable(r) {
     }
 }
 
-try {
-    await dbConnect();
-    let r = await dbQuery("select * from zmones");
-    printTable(r);
-    console.log("------------------------------------------------");
-    r = await dbQuery("select * from kontaktai");
-    printTable(r);
-    console.log("------------------------------------------------");
-} catch (err) {
-    console.log("Klaida: ", err);
-} finally {
-    try {
-        await dbDisconnect();
-    } catch (err) {
-    }
-    rl.close();
-}
+// try {
+// await dbConnect();
+// let r = await dbQuery("select * from zmones");
+// printTable(r);
+// console.log("------------------------------------------------");
+// r = await dbQuery("select * from kontaktai");
+// printTable(r);
+// console.log("------------------------------------------------");
 
+//     await inputText("Kelintas meniu?")
+//     if (inputText === "1") {
+//         await dbConnect();
+//         let r = await dbQuery("select * from zmones");
+//         printTable(r);
+//         console.log("------------------------------------------------");
+//     }
+
+// } catch (err) {
+//     console.log("Klaida: ", err);
+// } finally {
+//     try {
+//         await dbDisconnect();
+//     } catch (err) {
+//     }
+//     rl.close();
+// }
+
+
+
+await inputText("Kelintas meniu? ")
+if (userInput === 1) {
+    try {
+        await dbConnect();
+        let r = await dbQuery("select * from zmones");
+        printTable(r);
+        console.log("------------------------------------------------");
+    } catch (err) {
+        console.log("Klaida: ", err);
+    } finally {
+        try {
+            await dbDisconnect();
+        } catch (err) {
+        }
+        rl.close();
+        }
+}
