@@ -154,7 +154,7 @@ while (run) { // meniu atspausdinamas // su backtick spaudina per kelias eilutes
                     try {
                         conn = await dbConnect();
                         let r = await dbQuery(conn, "insert into zmones (vardas, pavarde, alga) values (?, ?, ?)", [vardas, pavarde, alga]); // nauju duomenu ivedimas i duomenu baze
-                        // printTable(r);
+                        console.log("Naujo iraso ID: " +  r.results.insertId);
                     }
                     catch (err) {
                         console.log("Klaida: ", err);
